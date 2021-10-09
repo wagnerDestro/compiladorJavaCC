@@ -1,0 +1,101 @@
+/**
+ * JavaCC template file created by SF JavaCC plugin 1.5.28+ wizard for JavaCC 1.5.0+
+ */options{  static = true;}PARSER_BEGIN(CompiladorAula)
+public class CompiladorAula{
+    public static void main(final String[] args) throws ParseException  {    CompiladorAula parser = new CompiladorAula(System.in);    while (true)    {      System.out.println("Escreva um programa:");      try      {        switch (CompiladorAula.main())        {          case 0 :           System.out.println("Boa!!.");          break;          case 1 :           System.out.println("Terminou.");          break;          default :           break;        }      }      catch (Exception e)      {        System.out.println("Errou!.");        System.out.println(e.getMessage());        CompiladorAula.ReInit(System.in);      }      catch (Error e)      {        System.out.println("Oops.");        System.out.println(e.getMessage());        break;      }    }  }}PARSER_END(CompiladorAula)SKIP :{  " "| "\r"| "\t"| "\n"}TOKEN : {  < INICIOPROGRAMA : "bora dar um piao" >| < PONTOVIRGULA : ";" >
+| < VIRGULA : ",">| < ABREBLOCO : " { " >| < FIMBLOCO : " }" >
+| < INTEIRO : "inteiro" >
+| < ATRIBUICAO: "recebe" >
+| < BOOLEANA: "teu cu" >
+| < PALAVRA: "desbaratinar uma ideia">
+}TOKEN :{
+ < NUMERO: (<DIGITO>)+ ( "." (<DIGITO>)+ )?>| < #DIGITO : [ "0"-"9" ] >
+| < IF: "se pa" >
+| < ELSE: "senao mete um migue">
+| < FOR: "repete essa porra" >
+| < TO: "ate" >
+| < DO: "lanca ai">
+| < TRUE: "true">
+| < FALSE: "false" >
+| < ID :  < LETRA >(< LETRA >|<DIGITO>)* >
+| < LETRA : ["A"-"Z"] | ["a"-"z"] >}
+TOKEN : {	/*OPERADORES LÓGICOS*/
+
+	< MAIOR: "eh maior" >
+|	< MENOR: "eh menor" >
+|	< MENOR_IGUAL: "eh menor ou igual" >
+|	< MAIOR_IGUAL: "eh maior ou igual" >
+|	< DIFERENTE: "eh diferente" >
+|	< IGUAL: "eh gemeo" >
+}
+int main() :{}{< INICIOPROGRAMA > < ABREBLOCO >
+
+comando()
+
+< FIMBLOCO >
+{  return 0;
+}}
+
+void comando() : {} 
+{
+  	 (declaracaoVariavel() | if_funcao() | for_funcao() | do_funcao())+ | {System.out.println("Fim comando");}
+}
+
+void for_funcao(): { }
+{
+  < FOR > dentro_do_laco() < TO > variavel_if() < ABREBLOCO > comando() < FIMBLOCO >
+}
+
+void if_funcao(): { }
+{
+  < IF > expressao_logica() < ABREBLOCO > comando() < FIMBLOCO > (< ELSE > < ABREBLOCO > comando() < FIMBLOCO >)?
+}
+
+
+void do_funcao(): { }
+{
+  < DO > < ABREBLOCO > comando() < FIMBLOCO > < TO > expressao_logica()
+}
+
+
+void dentro_do_laco(): { }
+{
+  < NUMERO > | < ID >
+}
+
+void expressao_logica() : {}
+{
+		variavel_if() (operador_logico() variavel_if())+
+}
+
+void variavel_if() : {} 
+{
+	      < ID >|< NUMERO >
+	
+}
+
+void operador_logico() : {} 
+{
+		< MAIOR >
+	|	< MENOR >
+	|	< MENOR_IGUAL >
+	|	< MAIOR_IGUAL >
+	|	< DIFERENTE >
+	|	< IGUAL >
+}
+
+void declaracaoVariavel():
+{}
+{
+  tipoDado() identificador_variaveis() < PONTOVIRGULA >
+}
+
+void identificador_variaveis() : {} 
+{
+	  < ID > | < LETRA > ((< VIRGULA > < ID >)+ | < ATRIBUICAO > (< ID > | < NUMERO >))
+}
+
+void tipoDado(): { }
+{
+  < INTEIRO >|< BOOLEANA >|< PALAVRA >
+}

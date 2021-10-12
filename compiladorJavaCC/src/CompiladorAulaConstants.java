@@ -60,6 +60,8 @@ public interface CompiladorAulaConstants {
   int DIFERENTE = 29;
   /** RegularExpression Id. */
   int IGUAL = 30;
+  /** RegularExpression Id. */
+  int AND = 31;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -74,8 +76,8 @@ public interface CompiladorAulaConstants {
     "\"bora dar um piao\"",
     "\";\"",
     "\",\"",
-    "\" { \"",
-    "\" }\"",
+    "\"{\"",
+    "\"}\"",
     "\"inteiro\"",
     "\"recebe\"",
     "\"teu cu\"",
@@ -97,6 +99,7 @@ public interface CompiladorAulaConstants {
     "\"eh maior ou igual\"",
     "\"eh diferente\"",
     "\"eh gemeo\"",
+    "\"&&\"",
   };
 
 }

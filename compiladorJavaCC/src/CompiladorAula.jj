@@ -3,7 +3,7 @@
  */options{  static = true;}PARSER_BEGIN(CompiladorAula)
 public class CompiladorAula{
     public static void main(final String[] args) throws ParseException  {    CompiladorAula parser = new CompiladorAula(System.in);    while (true)    {      System.out.println("Escreva um programa:");      try      {        switch (CompiladorAula.main())        {          case 0 :           System.out.println("Boa!!.");          break;          case 1 :           System.out.println("Terminou.");          break;          default :           break;        }      }      catch (Exception e)      {        System.out.println("Errou!.");        System.out.println(e.getMessage());        CompiladorAula.ReInit(System.in);      }      catch (Error e)      {        System.out.println("Oops.");        System.out.println(e.getMessage());        break;      }    }  }}PARSER_END(CompiladorAula)SKIP :{  " "| "\r"| "\t"| "\n"}TOKEN : {  < INICIOPROGRAMA : "bora dar um piao" >| < PONTOVIRGULA : ";" >
-| < VIRGULA : ",">| < ABREBLOCO : " { " >| < FIMBLOCO : " }" >
+| < VIRGULA : ",">| < ABREBLOCO : "{" >| < FIMBLOCO : "}" >
 | < INTEIRO : "inteiro" >
 | < ATRIBUICAO: "recebe" >
 | < BOOLEANA: "teu cu" >
@@ -27,45 +27,47 @@ TOKEN : {	/*OPERADORES LÓGICOS*/
 |	< MAIOR_IGUAL: "eh maior ou igual" >
 |	< DIFERENTE: "eh diferente" >
 |	< IGUAL: "eh gemeo" >
+|   < AND : "&&" > 
 }
 int main() :{}{< INICIOPROGRAMA > < ABREBLOCO >
 
-comando()
+/* PODE OU NÃO TER CÓDIGO */
+(comando())*
 
 < FIMBLOCO >
-{  return 0;
-}}
+{return 0;}}
 
 void comando() : {} 
 {
-  	 (declaracaoVariavel() | if_funcao() | for_funcao() | do_funcao())+ | {System.out.println("Fim comando");}
+  	 declaracaoVariavel() |
+  	 if_funcao()|
+  	 for_funcao() |
+  	 do_funcao()
 }
 
 void for_funcao(): { }
 {
-  < FOR > dentro_do_laco() < TO > variavel_if() < ABREBLOCO > comando() < FIMBLOCO >
+  < FOR > variavel_if() < TO > variavel_if() < ABREBLOCO > (comando())* < FIMBLOCO >
 }
 
 void if_funcao(): { }
 {
-  < IF > expressao_logica() < ABREBLOCO > comando() < FIMBLOCO > (< ELSE > < ABREBLOCO > comando() < FIMBLOCO >)?
+  < IF > expressao_logica() < ABREBLOCO > (comando())* < FIMBLOCO > (< ELSE > < ABREBLOCO > (comando())* < FIMBLOCO >)?
 }
 
 
 void do_funcao(): { }
 {
-  < DO > < ABREBLOCO > comando() < FIMBLOCO > < TO > expressao_logica()
-}
-
-
-void dentro_do_laco(): { }
-{
-  < NUMERO > | < ID >
+  < DO > < ABREBLOCO > (comando())* < FIMBLOCO > < TO > expressao_logica()
 }
 
 void expressao_logica() : {}
 {
-		variavel_if() (operador_logico() variavel_if())+
+		(variavel_if() operador_logico() variavel_if())
+
+			/* POSSIBILIDADE DE COLOCAR MAIS DE UMA CONDIÇÃO LÓGICA NO MESMO IF */
+
+		(< AND > expressao_logica())?
 }
 
 void variavel_if() : {} 
@@ -92,7 +94,36 @@ void declaracaoVariavel():
 
 void identificador_variaveis() : {} 
 {
-	  < ID > | < LETRA > ((< VIRGULA > < ID >)+ | < ATRIBUICAO > (< ID > | < NUMERO >))
+  		/* NOME VARIAVEL */
+	  nomeVariavel()
+
+		/* PODE OU NÃO TER ATRIBUIÇÃO */
+	  (< ATRIBUICAO > (< ID > | < NUMERO > | < FALSE > | < TRUE >))?
+
+		
+	  /* PODE OU NÃO TER MAIS DE UMA VARIÁVEL DECLARADA */
+	  (declararMais())?
+}
+
+void declararMais(): { }
+{
+
+	/* aqui o token em comum sempre vai ser a vírgula seguida do nome da variável, o que pode ou não ter depois disso
+	   é a atribuição, por isso o ? nela.
+	   Esse processo pode se repetir 1x ou mais
+	 */
+  
+  (< VIRGULA > (nomeVariavel() (atribuicao())?))+
+}
+
+void nomeVariavel(): { }
+{
+	(< ID > | < LETRA >)
+}
+
+void atribuicao(): { }
+{
+  (< ATRIBUICAO > (< ID > | < NUMERO > | < FALSE > | < TRUE >))
 }
 
 void tipoDado(): { }

@@ -7,7 +7,7 @@ public class CompiladorAula{
 | < INTEIRO : "inteiro" >
 | < ATRIBUICAO: "recebe" >
 | < BOOLEANA: "teu cu" >
-| < PALAVRA: "desbaratinar uma ideia">
+| < STRING: "desbaratinar uma ideia">
 }TOKEN :{
  < NUMERO: (<DIGITO>)+ ( "." (<DIGITO>)+ )?>| < #DIGITO : [ "0"-"9" ] >
 | < IF: "se pa" >
@@ -17,8 +17,9 @@ public class CompiladorAula{
 | < DO: "lanca ai">
 | < TRUE: "true">
 | < FALSE: "false" >
-| < ID :  < LETRA >(< LETRA >|<DIGITO>)* >
-| < LETRA : ["A"-"Z"] | ["a"-"z"] >}
+| < ID: ["a" - "z" , "A" - "Z"](["a" - "z" , "A" - "Z" , "0" - "9", "_"])*>
+| < LETRA : ["A"-"Z"] | ["a"-"z"] >
+| < PALAVRA: (< LETRA >)+>}
 TOKEN : {	/*OPERADORES LÓGICOS*/
 
 	< MAIOR: "eh maior" >
@@ -27,7 +28,8 @@ TOKEN : {	/*OPERADORES LÓGICOS*/
 |	< MAIOR_IGUAL: "eh maior ou igual" >
 |	< DIFERENTE: "eh diferente" >
 |	< IGUAL: "eh gemeo" >
-|   < AND : "&&" > 
+|   < AND : "&&" >
+|   < OR: "||" >
 }
 int main() :{}{< INICIOPROGRAMA > < ABREBLOCO >
 
@@ -44,6 +46,12 @@ void comando() : {}
 		CONDICIONAL
 		UM DOS 2 LAÇOS DE REPETIÇÃO
   	 */
+
+
+	/* aqui eu imaginei da gente inserir uma atribuição sem precisar da definição, mas não sei como verificariamos
+  	 se a variável já foi definida anteriormente. na real não sei nem se isso é feito na análise léxica e sintática
+  	  */
+  	 < ID > atribuicao() | 
   	 declaracaoVariavel() |
   	 if_funcao()|
   	 for_funcao() |
@@ -95,7 +103,7 @@ void expressao_logica() : {}
 
 			/* POSSIBILIDADE DE COLOCAR MAIS DE UMA CONDIÇÃO LÓGICA NO MESMO IF OU DO WHILE */
 
-		(< AND > expressao_logica())?
+		( (< AND > | < OR >) expressao_logica())?
 }
 
 void variavel_if() : {} 
@@ -152,10 +160,10 @@ void nomeVariavel(): { }
 
 void atribuicao(): { }
 {
-  (< ATRIBUICAO > (< ID > | < NUMERO > | < FALSE > | < TRUE >))
+  (< ATRIBUICAO > (< ID > | < NUMERO > | < FALSE > | < TRUE > | < PALAVRA >))
 }
 
 void tipoDado(): { }
 {
-  < INTEIRO >|< BOOLEANA >|< PALAVRA >
+  < INTEIRO >|< BOOLEANA >|< STRING >
 }

@@ -25,7 +25,7 @@ public interface CompiladorAulaConstants {
   /** RegularExpression Id. */
   int BOOLEANA = 12;
   /** RegularExpression Id. */
-  int PALAVRA = 13;
+  int STRING = 13;
   /** RegularExpression Id. */
   int NUMERO = 14;
   /** RegularExpression Id. */
@@ -49,19 +49,23 @@ public interface CompiladorAulaConstants {
   /** RegularExpression Id. */
   int LETRA = 24;
   /** RegularExpression Id. */
-  int MAIOR = 25;
+  int PALAVRA = 25;
   /** RegularExpression Id. */
-  int MENOR = 26;
+  int MAIOR = 26;
   /** RegularExpression Id. */
-  int MENOR_IGUAL = 27;
+  int MENOR = 27;
   /** RegularExpression Id. */
-  int MAIOR_IGUAL = 28;
+  int MENOR_IGUAL = 28;
   /** RegularExpression Id. */
-  int DIFERENTE = 29;
+  int MAIOR_IGUAL = 29;
   /** RegularExpression Id. */
-  int IGUAL = 30;
+  int DIFERENTE = 30;
   /** RegularExpression Id. */
-  int AND = 31;
+  int IGUAL = 31;
+  /** RegularExpression Id. */
+  int AND = 32;
+  /** RegularExpression Id. */
+  int OR = 33;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -93,6 +97,7 @@ public interface CompiladorAulaConstants {
     "\"false\"",
     "<ID>",
     "<LETRA>",
+    "<PALAVRA>",
     "\"eh maior\"",
     "\"eh menor\"",
     "\"eh menor ou igual\"",
@@ -100,6 +105,7 @@ public interface CompiladorAulaConstants {
     "\"eh diferente\"",
     "\"eh gemeo\"",
     "\"&&\"",
+    "\"||\"",
   };
 
 }

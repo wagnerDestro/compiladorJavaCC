@@ -44,10 +44,11 @@ public class CompiladorAula implements CompiladorAulaConstants {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case INTEIRO:
       case BOOLEANA:
-      case PALAVRA:
+      case STRING:
       case IF:
       case FOR:
       case DO:
+      case ID:
         ;
         break;
       default:
@@ -63,9 +64,13 @@ public class CompiladorAula implements CompiladorAulaConstants {
 
   static final public void comando() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case ID:
+      jj_consume_token(ID);
+      atribuicao();
+      break;
     case INTEIRO:
     case BOOLEANA:
-    case PALAVRA:
+    case STRING:
       declaracaoVariavel();
       break;
     case IF:
@@ -95,10 +100,11 @@ public class CompiladorAula implements CompiladorAulaConstants {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case INTEIRO:
       case BOOLEANA:
-      case PALAVRA:
+      case STRING:
       case IF:
       case FOR:
       case DO:
+      case ID:
         ;
         break;
       default:
@@ -119,10 +125,11 @@ public class CompiladorAula implements CompiladorAulaConstants {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case INTEIRO:
       case BOOLEANA:
-      case PALAVRA:
+      case STRING:
       case IF:
       case FOR:
       case DO:
+      case ID:
         ;
         break;
       default:
@@ -141,10 +148,11 @@ public class CompiladorAula implements CompiladorAulaConstants {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case INTEIRO:
         case BOOLEANA:
-        case PALAVRA:
+        case STRING:
         case IF:
         case FOR:
         case DO:
+        case ID:
           ;
           break;
         default:
@@ -169,10 +177,11 @@ public class CompiladorAula implements CompiladorAulaConstants {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case INTEIRO:
       case BOOLEANA:
-      case PALAVRA:
+      case STRING:
       case IF:
       case FOR:
       case DO:
+      case ID:
         ;
         break;
       default:
@@ -192,11 +201,23 @@ public class CompiladorAula implements CompiladorAulaConstants {
     variavel_if();
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case AND:
-      jj_consume_token(AND);
+    case OR:
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case AND:
+        jj_consume_token(AND);
+        break;
+      case OR:
+        jj_consume_token(OR);
+        break;
+      default:
+        jj_la1[7] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
       expressao_logica();
       break;
     default:
-      jj_la1[7] = jj_gen;
+      jj_la1[8] = jj_gen;
       ;
     }
   }
@@ -210,7 +231,7 @@ public class CompiladorAula implements CompiladorAulaConstants {
       jj_consume_token(NUMERO);
       break;
     default:
-      jj_la1[8] = jj_gen;
+      jj_la1[9] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -237,7 +258,7 @@ public class CompiladorAula implements CompiladorAulaConstants {
       jj_consume_token(IGUAL);
       break;
     default:
-      jj_la1[9] = jj_gen;
+      jj_la1[10] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -268,13 +289,13 @@ public class CompiladorAula implements CompiladorAulaConstants {
         jj_consume_token(TRUE);
         break;
       default:
-        jj_la1[10] = jj_gen;
+        jj_la1[11] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
       break;
     default:
-      jj_la1[11] = jj_gen;
+      jj_la1[12] = jj_gen;
       ;
     }
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -282,7 +303,7 @@ public class CompiladorAula implements CompiladorAulaConstants {
       declararMais();
       break;
     default:
-      jj_la1[12] = jj_gen;
+      jj_la1[13] = jj_gen;
       ;
     }
   }
@@ -297,7 +318,7 @@ public class CompiladorAula implements CompiladorAulaConstants {
         atribuicao();
         break;
       default:
-        jj_la1[13] = jj_gen;
+        jj_la1[14] = jj_gen;
         ;
       }
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -305,7 +326,7 @@ public class CompiladorAula implements CompiladorAulaConstants {
         ;
         break;
       default:
-        jj_la1[14] = jj_gen;
+        jj_la1[15] = jj_gen;
         break label_6;
       }
     }
@@ -320,7 +341,7 @@ public class CompiladorAula implements CompiladorAulaConstants {
       jj_consume_token(LETRA);
       break;
     default:
-      jj_la1[15] = jj_gen;
+      jj_la1[16] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -341,8 +362,11 @@ public class CompiladorAula implements CompiladorAulaConstants {
     case TRUE:
       jj_consume_token(TRUE);
       break;
+    case PALAVRA:
+      jj_consume_token(PALAVRA);
+      break;
     default:
-      jj_la1[16] = jj_gen;
+      jj_la1[17] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -356,11 +380,11 @@ public class CompiladorAula implements CompiladorAulaConstants {
     case BOOLEANA:
       jj_consume_token(BOOLEANA);
       break;
-    case PALAVRA:
-      jj_consume_token(PALAVRA);
+    case STRING:
+      jj_consume_token(STRING);
       break;
     default:
-      jj_la1[17] = jj_gen;
+      jj_la1[18] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -376,13 +400,18 @@ public class CompiladorAula implements CompiladorAulaConstants {
   static public Token jj_nt;
   static private int jj_ntk;
   static private int jj_gen;
-  static final private int[] jj_la1 = new int[18];
+  static final private int[] jj_la1 = new int[19];
   static private int[] jj_la1_0;
+  static private int[] jj_la1_1;
   static {
       jj_la1_init_0();
+      jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x153400,0x153400,0x153400,0x153400,0x153400,0x20000,0x153400,0x80000000,0x804000,0x7e000000,0xe04000,0x800,0x80,0x800,0x80,0x1800000,0xe04000,0x3400,};
+      jj_la1_0 = new int[] {0x953400,0x953400,0x953400,0x953400,0x953400,0x20000,0x953400,0x0,0x0,0x804000,0xfc000000,0xe04000,0x800,0x80,0x800,0x80,0x1800000,0x2e04000,0x3400,};
+   }
+   private static void jj_la1_init_1() {
+      jj_la1_1 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x3,0x3,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,};
    }
 
   /** Constructor with InputStream. */
@@ -403,7 +432,7 @@ public class CompiladorAula implements CompiladorAulaConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 18; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 19; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -417,7 +446,7 @@ public class CompiladorAula implements CompiladorAulaConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 18; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 19; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -434,7 +463,7 @@ public class CompiladorAula implements CompiladorAulaConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 18; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 19; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -444,7 +473,7 @@ public class CompiladorAula implements CompiladorAulaConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 18; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 19; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -460,7 +489,7 @@ public class CompiladorAula implements CompiladorAulaConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 18; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 19; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -469,7 +498,7 @@ public class CompiladorAula implements CompiladorAulaConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 18; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 19; i++) jj_la1[i] = -1;
   }
 
   static private Token jj_consume_token(int kind) throws ParseException {
@@ -520,21 +549,24 @@ public class CompiladorAula implements CompiladorAulaConstants {
   /** Generate ParseException. */
   static public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[32];
+    boolean[] la1tokens = new boolean[34];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 18; i++) {
+    for (int i = 0; i < 19; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
             la1tokens[j] = true;
           }
+          if ((jj_la1_1[i] & (1<<j)) != 0) {
+            la1tokens[32+j] = true;
+          }
         }
       }
     }
-    for (int i = 0; i < 32; i++) {
+    for (int i = 0; i < 34; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

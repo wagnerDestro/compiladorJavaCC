@@ -39,6 +39,11 @@ TOKEN : {	/*OPERADORES LÓGICOS*/
 
 void comando() : {} 
 {
+  	/* PODE SER:
+  	 	DECLARAÇÃO DE VARIÁVEL
+		CONDICIONAL
+		UM DOS 2 LAÇOS DE REPETIÇÃO
+  	 */
   	 declaracaoVariavel() |
   	 if_funcao()|
   	 for_funcao() |
@@ -47,25 +52,48 @@ void comando() : {}
 
 void for_funcao(): { }
 {
-  < FOR > variavel_if() < TO > variavel_if() < ABREBLOCO > (comando())* < FIMBLOCO >
+  < FOR > variavel_if() < TO > variavel_if() < ABREBLOCO >
+
+	/* PODE OU NÃO TER VÁRIOS IF/FOR/DO ENCADEADO */
+  (comando())*
+
+  < FIMBLOCO >
 }
 
 void if_funcao(): { }
 {
-  < IF > expressao_logica() < ABREBLOCO > (comando())* < FIMBLOCO > (< ELSE > < ABREBLOCO > (comando())* < FIMBLOCO >)?
+  < IF > expressao_logica() < ABREBLOCO >
+	
+	/* PODE OU NÃO TER VÁRIOS IF/FOR/DO ENCADEADO */
+  (comando())*
+
+  < FIMBLOCO >
+
+  (< ELSE > < ABREBLOCO >
+
+  /* PODE OU NÃO TER VÁRIOS IF/FOR/DO ENCADEADO */
+  (comando())*
+
+  < FIMBLOCO >)?
 }
 
 
 void do_funcao(): { }
 {
-  < DO > < ABREBLOCO > (comando())* < FIMBLOCO > < TO > expressao_logica()
+  < DO > < ABREBLOCO >
+  
+	/* PODE OU NÃO TER VÁRIOS IF/FOR/DO ENCADEADO */
+  (comando())*
+  < FIMBLOCO >
+
+  < TO > expressao_logica()
 }
 
 void expressao_logica() : {}
 {
 		(variavel_if() operador_logico() variavel_if())
 
-			/* POSSIBILIDADE DE COLOCAR MAIS DE UMA CONDIÇÃO LÓGICA NO MESMO IF */
+			/* POSSIBILIDADE DE COLOCAR MAIS DE UMA CONDIÇÃO LÓGICA NO MESMO IF OU DO WHILE */
 
 		(< AND > expressao_logica())?
 }
@@ -108,9 +136,10 @@ void identificador_variaveis() : {}
 void declararMais(): { }
 {
 
-	/* aqui o token em comum sempre vai ser a vírgula seguida do nome da variável, o que pode ou não ter depois disso
+	/* - aqui o token em comum sempre vai ser a vírgula seguida do nome da variável, o que pode ou não ter depois disso
 	   é a atribuição, por isso o ? nela.
-	   Esse processo pode se repetir 1x ou mais
+
+	   - Esse processo pode se repetir 1x ou mais
 	 */
   
   (< VIRGULA > (nomeVariavel() (atribuicao())?))+

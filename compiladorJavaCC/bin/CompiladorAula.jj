@@ -2,11 +2,11 @@
  * JavaCC template file created by SF JavaCC plugin 1.5.28+ wizard for JavaCC 1.5.0+
  */options{  static = true;}PARSER_BEGIN(CompiladorAula)
 public class CompiladorAula{
-    public static void main(final String[] args) throws ParseException  {    CompiladorAula parser = new CompiladorAula(System.in);    while (true)    {      System.out.println("Escreva um programa:");      try      {        switch (CompiladorAula.main())        {          case 0 :           System.out.println("Boa!!.");          break;          case 1 :           System.out.println("Terminou.");          break;          default :           break;        }      }      catch (Exception e)      {        System.out.println("Errou!.");        System.out.println(e.getMessage());        CompiladorAula.ReInit(System.in);      }      catch (Error e)      {        System.out.println("Oops.");        System.out.println(e.getMessage());        break;      }    }  }}PARSER_END(CompiladorAula)SKIP :{  " "| "\r"| "\t"| "\n"}TOKEN : {  < INICIOPROGRAMA : "bora dar um piao" >| < PONTOVIRGULA : ";" >
+    public static void main(final String[] args) throws ParseException  {    CompiladorAula parser = new CompiladorAula(System.in);    while (true)    {      System.out.println("Escreva um programa:");      try      {        switch (CompiladorAula.main())        {          case 0 :           System.out.println("Boa! Menor tá ligeiro na linguagem dos cria.");          break;          case 1 :           System.out.println("Terminou.");          break;          default :           break;        }      }      catch (Exception e)      {        System.out.println("Ta moscando menor?");        System.out.println(e.getMessage());        CompiladorAula.ReInit(System.in);      }      catch (Error e)      {        System.out.println("Oops.");        System.out.println(e.getMessage());        break;      }    }  }}PARSER_END(CompiladorAula)SKIP :{  " "| "\r"| "\t"| "\n"}TOKEN : {  < INICIOPROGRAMA : "bora dar um piao" >| < PONTOVIRGULA : ";" >
 | < VIRGULA : ",">| < ABREBLOCO : "{" >| < FIMBLOCO : "}" >
-| < INTEIRO : "inteiro" >
+| < INTEIRO : "redondo" >
 | < ATRIBUICAO: "recebe" >
-| < BOOLEANA: "teu cu" >
+| < BOOLEANA: "seloco" >
 | < STRING: "desbaratinar uma ideia">
 }TOKEN :{
  < NUMERO: (<DIGITO>)+ ( "." (<DIGITO>)+ )?>| < #DIGITO : [ "0"-"9" ] >
@@ -15,9 +15,9 @@ public class CompiladorAula{
 | < FOR: "repete essa porra" >
 | < TO: "ate" >
 | < DO: "lanca ai">
-| < TRUE: "true">
-| < FALSE: "false" >
-| < ID: ["a" - "z" , "A" - "Z"](["a" - "z" , "A" - "Z" , "0" - "9", "_"])*>
+| < TRUE: "bagulho eh memo">
+| < FALSE: "bagulho eh cao" >
+| < ID: < LETRA >(< LETRA > | ["0" - "9", "_"])*>
 | < LETRA : ["A"-"Z"] | ["a"-"z"] >
 | < PALAVRA: (< LETRA >)+>}
 TOKEN : {	/*OPERADORES LÓGICOS*/
@@ -30,6 +30,10 @@ TOKEN : {	/*OPERADORES LÓGICOS*/
 |	< IGUAL: "eh gemeo" >
 |   < AND : "&&" >
 |   < OR: "||" >
+|   < SOMA: "+" >
+|	< SUBTRACAO: "-" >
+|	< MULTIPLICACAO: "*" >
+|	< DIVISAO: "/" >	
 }
 int main() :{}{< INICIOPROGRAMA > < ABREBLOCO >
 
@@ -42,31 +46,37 @@ TOKEN : {	/*OPERADORES LÓGICOS*/
 void comando() : {} 
 {
   	/* PODE SER:
+  		ATRIBUIÇÃO DE VARIÁVEL
   	 	DECLARAÇÃO DE VARIÁVEL
+  	 	EXPRESSÃO MATEMÁTICA
 		CONDICIONAL
 		UM DOS 2 LAÇOS DE REPETIÇÃO
   	 */
-
-
-	/* aqui eu imaginei da gente inserir uma atribuição sem precisar da definição, mas não sei como verificariamos
-  	 se a variável já foi definida anteriormente. na real não sei nem se isso é feito na análise léxica e sintática
-  	  */
-  	 < ID > atribuicao() | 
+	
+  	 atribuir_ou_expressao() |
   	 declaracaoVariavel() |
   	 if_funcao()|
   	 for_funcao() |
   	 do_funcao()
 }
 
+void atribuir_ou_expressao(): { } {
+	((< ID > atribuicao() | expressao_matematica()) | (< NUMERO > expressao_matematica() )) < PONTOVIRGULA > 
+}
+
 void for_funcao(): { }
 {
-  < FOR > variavel_if() < TO > variavel_if() < ABREBLOCO >
+  < FOR > variavel_for() < TO > variavel_for() < ABREBLOCO >
 
 	/* PODE OU NÃO TER VÁRIOS IF/FOR/DO ENCADEADO */
   (comando())*
 
   < FIMBLOCO >
 }
+
+void variavel_for(): { } {
+	< ID >|< NUMERO >
+	}
 
 void if_funcao(): { }
 {
@@ -108,7 +118,7 @@ void expressao_logica() : {}
 
 void variavel_if() : {} 
 {
-	      < ID >|< NUMERO >
+	      < ID >|< NUMERO > | < PALAVRA >
 	
 }
 
@@ -150,7 +160,7 @@ void declararMais(): { }
 	   - Esse processo pode se repetir 1x ou mais
 	 */
   
-  (< VIRGULA > (nomeVariavel() (atribuicao())?))+
+  (< VIRGULA > nomeVariavel() (atribuicao())?)+
 }
 
 void nomeVariavel(): { }
@@ -166,4 +176,24 @@ void atribuicao(): { }
 void tipoDado(): { }
 {
   < INTEIRO >|< BOOLEANA >|< STRING >
+}
+
+void expressao_matematica() : {}
+
+{
+	(operador_matematico() extremidade_expressao())
+}
+
+void extremidade_expressao():{}
+{
+	< ID > | < NUMERO >
+}
+
+void operador_matematico() : {} 
+{
+		< SOMA >
+	|	< SUBTRACAO >
+	|	< MULTIPLICACAO >
+	|	< DIVISAO >	
+	
 }

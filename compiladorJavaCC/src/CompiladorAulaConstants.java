@@ -66,6 +66,14 @@ public interface CompiladorAulaConstants {
   int AND = 32;
   /** RegularExpression Id. */
   int OR = 33;
+  /** RegularExpression Id. */
+  int SOMA = 34;
+  /** RegularExpression Id. */
+  int SUBTRACAO = 35;
+  /** RegularExpression Id. */
+  int MULTIPLICACAO = 36;
+  /** RegularExpression Id. */
+  int DIVISAO = 37;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -82,9 +90,9 @@ public interface CompiladorAulaConstants {
     "\",\"",
     "\"{\"",
     "\"}\"",
-    "\"inteiro\"",
+    "\"redondo\"",
     "\"recebe\"",
-    "\"teu cu\"",
+    "\"seloco\"",
     "\"desbaratinar uma ideia\"",
     "<NUMERO>",
     "<DIGITO>",
@@ -93,8 +101,8 @@ public interface CompiladorAulaConstants {
     "\"repete essa porra\"",
     "\"ate\"",
     "\"lanca ai\"",
-    "\"true\"",
-    "\"false\"",
+    "\"bagulho eh memo\"",
+    "\"bagulho eh cao\"",
     "<ID>",
     "<LETRA>",
     "<PALAVRA>",
@@ -106,6 +114,10 @@ public interface CompiladorAulaConstants {
     "\"eh gemeo\"",
     "\"&&\"",
     "\"||\"",
+    "\"+\"",
+    "\"-\"",
+    "\"*\"",
+    "\"/\"",
   };
 
 }
